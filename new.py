@@ -1,20 +1,18 @@
-
 import imutils
-
 import pytesseract
 from PIL import Image
-
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'#응용프로그램을
 # 설치하세요 위치는 알아서 탐색기에서 확인하시고..
-
 import cv2
 import numpy as np
+
+
 
 
 '''
 
 해야할 일
-1. 전체 책에서 라벨 위치만 따오기
+1. 전체 책에서 라벨 위치만 따오기 (이건 생략해도 될듯하다.)
 2. 라벨을 똑바로 세우기
 3. 라벨에서 문자를 추출하기.
 4. isbn의 위치를 찾으면 isbn의 x,y,h는 넘겨두고 w만 라벨 전체의 길이만큼 만든뒤.
@@ -31,12 +29,13 @@ import numpy as np
 resultStrings=[]
 #large = cv2.imread('numbers100.png')
 large = cv2.imread('isbn2.jpg')#사용자가 클로즈업을 해서 사진을 찍는다면 상관이 없겠지만 그냥 책만 턱 내려놓으면 이걸로는 답이 없다.
-#그럼 또 라벨을 잘라내는걸 구해야함 ㅅㅂ
-#그리고 글씨를 기준으로 상하좌우 회전을 맞춰야함. 안그러면  isbm 문자의 "오른쪽"으로 이미지 또 탐색 이라는 목표가 좌절됨.
+
+
+
 
 large= cv2.resize(large, (1000, 1000)) #이미지 리사이즈 .
 rgb = cv2.pyrDown(large) #이미지의 크기를 반으로 줄인다.
-small = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
+small = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)#그레이스케일 이미지.
 
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
 grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
@@ -49,16 +48,17 @@ connected = cv2.morphologyEx(bw, cv2.MORPH_CLOSE, kernel)# 그림판의 지우�
 
 
 # using RETR_EXTERNAL instead of RETR_CCOMP
-contours, hierarchy = cv2.findContours(connected.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-
+contours, hierarchy = cv2.findContours(connected.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)#경계선을 찾아내서 분리하자.
 mask = np.zeros(bw.shape, dtype=np.uint8)#왜 있는지 모르겠지만 아무것도 없는 빈 배열이다.
 rgb2 =rgb.copy()#deep copy rgb2는 네모찍힐놈 그냥 rgb는 네모안찍히고 연산할놈. 이거 없애도 될듯한데....
+
 
 
 
 grayScaleImg = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
 thersoldImg = cv2.adaptiveThreshold(grayScaleImg, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
 img_canny = cv2.Canny(grayScaleImg, 50, 150)
+
 
 for idx in range(len(contours)):
     x, y, w, h = cv2.boundingRect(contours[idx])
