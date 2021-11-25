@@ -26,6 +26,28 @@ def recvMsg(clientSock):
     msgReceive =clientSock.recv(sizeReceive)#제대로 다 왔는데 이걸 \t 같은 특문을 어찌 번역해야 하냐.....
     msgReceive = msgReceive.decode('utf-8')# 이러니까 된다!!
     print("received Real Message \n",msgReceive)#결국 메모리를 타이트하게 알뜰살뜰하게 쓰면서 송수신이 성공했다.
+    #문제는 그것을 리스트로 변환해주는 것이다.
+    print("msgREceive type ",type(msgReceive))
+    msgReceive = msgReceive.rstrip('\n')#remove last \n 할 의도였는데 .
+    print("msg receive\n",msgReceive)
+    lineSpiltedData = msgReceive.split('\n')#모든 \n이 사라지고 거기를 기준으로 갈라졌다
+    print("line spilted data type ",type(lineSpiltedData))
+    print("linespilted data\n",lineSpiltedData)
+    for i in range(len(lineSpiltedData)):
+        #print(i)
+
+        tempLine= lineSpiltedData[i].rstrip('\t')#내가 sp엘-아이t 인데 sp아이-엘t로 보고 1시간 가까이 삽질중이었다.
+        tempLine= tempLine.split('\t')#내가 sp엘-아이t 인데 sp아이-엘t로 보고 1시간 가까이 삽질중이었다.
+
+        print("tempLine  ",tempLine)
+        lineSpiltedData[i] = tempLine
+        print("lineSpiltedData[i]  ",lineSpiltedData[i])
+
+
+    print("line spilted data last calculation",lineSpiltedData) #드디어 드디어 성공하였다성공하였다!!!!!
+
+
+
 
 
 def sendMsg(msg,clientSock):
