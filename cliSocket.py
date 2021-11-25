@@ -34,8 +34,6 @@ def recvMsg(clientSock):
     print("line spilted data type ",type(lineSpiltedData))
     print("linespilted data\n",lineSpiltedData)
     for i in range(len(lineSpiltedData)):
-        #print(i)
-
         tempLine= lineSpiltedData[i].rstrip('\t')#내가 sp엘-아이t 인데 sp아이-엘t로 보고 1시간 가까이 삽질중이었다.
         tempLine= tempLine.split('\t')#내가 sp엘-아이t 인데 sp아이-엘t로 보고 1시간 가까이 삽질중이었다.
 
@@ -44,7 +42,7 @@ def recvMsg(clientSock):
         print("lineSpiltedData[i]  ",lineSpiltedData[i])
 
 
-    print("line spilted data last calculation",lineSpiltedData) #드디어 드디어 성공하였다성공하였다!!!!!
+    print("\n\n\n\nline spilted data last calculation\n\n\n",lineSpiltedData) #드디어 드디어 성공하였다성공하였다!!!!!
 
 
 
