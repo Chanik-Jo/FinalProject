@@ -1,6 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 isbn="979-11-5839-179-9"
+
+
+#이건 크롤링 소스였고,
+
 url = 'https://www.nl.go.kr/NL/contents/search.do?' \
       'srchTarget=total&pageNum=1&pageSize=10&kwd={}'.format(isbn)
 print("url is \n",url)
